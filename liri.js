@@ -55,19 +55,43 @@ var userSubject = process.arv[3];
 
 var queryURLMovies = "http://www.omdbapi.com/?t=" + userSubject + "&y=&plot=short&apikey=trilogy"
 var queryURLBands = "https://rest.bandsintown.com/artists/" + userSubject + "/events?app_id=codingbootcamp"
+
+function concertCall(){
 axios.get(queryURLBands).then(
     function(response){
-        console.log("Name of Venue: " + response[0].venue.name + ".\nVenue Location: " + response[0].venue.city + ", " + response[0].venue.country + ".\nDate of the Event: " + response[0].datetime)
+        console.log("Name of Venue: " + response[0].venue.name + ".\nVenue Location: " + response[0].venue.city + ", " + response[0].venue.country + ".\nDate of the Event: " + moment(response[0].datetime).format("MM/DD/YYYY"))
     }
 )
+};
 
+function movieCall(){
 axios.get(queryURLMovies)
 .then(
   function(response) {
     console.log("Title: " + response.title + ".\nYear: " + response.year + ".\nIMDB Rating: " + response.imdbRating + ".\nRotten Tomatoes Rating: " + response.Ratings[1].Value + ".\nCountry Produced: " + response.Country + ".\nLanguage" + response.Language + "Plot: " + response.Plot + ".\nActors: " + response.Actors);
   }
 );
+};
 
+// switch
 
+switch(userCommand){
+    case "concert-this":
+        concertCall();
+        console.log("concert")
+        break;
+    case "spotify-this-song":
+        console.log("spotify")
+        break;
+    case "movie-this":
+        movieCall();
+        console.log("movie")
+        break;
+    case "do-what-it-says":
+        console.log("something")
+        break;
+    default:
+        console.log("Oopsie Poops")
+}
 
 // questions

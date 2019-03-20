@@ -4,8 +4,6 @@
     // Spotify: songs
     // Bands in Town: concerts
     // OMDB: movies
-// Uses CLI
-    // Inquiry
 // Uses Promise based HTTP Client
     // Axios
 // Uses JS Library
@@ -44,11 +42,11 @@
 require("dotenv").config();
 var keys = require("./keys.js");
 var axios = require("axios");
-var inquiry = require("inquiry");
-var spotify = new Spotify(keys.spotify);
+var moment = require("moment")
+// var spotify = new Spotify(keys.spotify);
 
 var userCommand = process.argv[2];
-var userSubject = process.arv[3];
+var userSubject = process.argv[3];
 
 
 // Data Pulls
@@ -59,7 +57,10 @@ var queryURLBands = "https://rest.bandsintown.com/artists/" + userSubject + "/ev
 function concertCall(){
 axios.get(queryURLBands).then(
     function(response){
-        console.log("Name of Venue: " + response[0].venue.name + ".\nVenue Location: " + response[0].venue.city + ", " + response[0].venue.country + ".\nDate of the Event: " + moment(response[0].datetime).format("MM/DD/YYYY"))
+        console.log(response.data[0]);
+        var time = moment(response.data[0].datetime, "YYYY-MM-DD-HH:mm:ss").format("MM/DD/YYYY");
+        console.log(time);
+        console.log("Name of Venue: " + response.data[0].venue.name + "\nVenue Location: " + response.data[0].venue.city + ", " + response.data[0].venue.country + "\nDate of the Event: " + time)
     }
 )
 };
@@ -68,7 +69,8 @@ function movieCall(){
 axios.get(queryURLMovies)
 .then(
   function(response) {
-    console.log("Title: " + response.title + ".\nYear: " + response.year + ".\nIMDB Rating: " + response.imdbRating + ".\nRotten Tomatoes Rating: " + response.Ratings[1].Value + ".\nCountry Produced: " + response.Country + ".\nLanguage" + response.Language + "Plot: " + response.Plot + ".\nActors: " + response.Actors);
+      console.log(response);
+    console.log("Title: " + response.title + "\nYear: " + response.year + "\nIMDB Rating: " + response.imdbRating + "\nRotten Tomatoes Rating: " + response.Ratings[1].Value + "\nCountry Produced: " + response.Country + "\nLanguage" + response.Language + "\nPlot: " + response.Plot + "\nActors: " + response.Actors);
   }
 );
 };

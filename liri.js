@@ -1,20 +1,8 @@
-require("dotenv").config();
-var keys = require("./keys.js");
-var spotify = new Spotify(keys.spotify);
-
-var axios = require("axios");
-
-axios.get().then(
-    function(response){
-
-    }
-)
-
 // LiriBot
 // Takes in arguments and returns data
 // Uses API's
     // Spotify: songs
-    // Bands in Town: oncerts
+    // Bands in Town: concerts
     // OMDB: movies
 // Uses CLI
     // Inquiry
@@ -22,7 +10,7 @@ axios.get().then(
     // Axios
 // Uses JS Library
     // Moment
-// Commands (Switch Case)
+// Commands (Switch)
     // Bands in Town: node liri.js concert-this <artist/band name here>
         //link: "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
         // Includes
@@ -53,3 +41,33 @@ axios.get().then(
         // run spotify-this-song
             // "I Want it That Way,"
             // ???Edit the text in random.txt to test out the feature for movie-this and concert-this
+require("dotenv").config();
+var keys = require("./keys.js");
+var axios = require("axios");
+var inquiry = require("inquiry");
+var spotify = new Spotify(keys.spotify);
+
+var userCommand = process.argv[2];
+var userSubject = process.arv[3];
+
+
+// Data Pulls
+
+var queryURLMovies = "http://www.omdbapi.com/?t=" + userSubject + "&y=&plot=short&apikey=trilogy"
+var queryURLBands = "https://rest.bandsintown.com/artists/" + userSubject + "/events?app_id=codingbootcamp"
+axios.get(queryURLBands).then(
+    function(response){
+        console.log("Name of Venue: " + response[0].venue.name + ".\nVenue Location: " + response[0].venue.city + ", " + response[0].venue.country + ".\nDate of the Event: " + response[0].datetime)
+    }
+)
+
+axios.get(queryURLMovies)
+.then(
+  function(response) {
+    console.log("Title: " + response.title + ".\nYear: " + response.year + ".\nIMDB Rating: " + response.imdbRating + ".\nRotten Tomatoes Rating: " + response.Ratings[1].Value + ".\nCountry Produced: " + response.Country + ".\nLanguage" + response.Language + "Plot: " + response.Plot + ".\nActors: " + response.Actors);
+  }
+);
+
+
+
+// questions

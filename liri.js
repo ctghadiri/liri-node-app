@@ -43,51 +43,68 @@ require("dotenv").config();
 var keys = require("./keys.js");
 var axios = require("axios");
 var moment = require("moment")
-// var spotify = new Spotify(keys.spotify);
+var Spotify = require("node-spotify-api")
+var spotify = new Spotify(keys.spotify);
+var fs = require("fs")
 
 var userCommand = process.argv[2];
-var userSubject = process.argv[3];
-
+var userSubject = process.argv.slice(3).join("+");
+console.log(userSubject)
 
 // Data Pulls
 
-var queryURLMovies = "http://www.omdbapi.com/?t=" + userSubject + "&y=&plot=short&apikey=trilogy"
-var queryURLBands = "https://rest.bandsintown.com/artists/" + userSubject + "/events?app_id=codingbootcamp"
 
 function concertCall(){
-axios.get(queryURLBands).then(
-    function(response){
-        console.log(response.data[0]);
-        var time = moment(response.data[0].datetime, "YYYY-MM-DD-HH:mm:ss").format("MM/DD/YYYY");
-        console.log(time);
-        console.log("Name of Venue: " + response.data[0].venue.name + "\nVenue Location: " + response.data[0].venue.city + ", " + response.data[0].venue.country + "\nDate of the Event: " + time)
-    }
-)
+    var queryURLBands = "https://rest.bandsintown.com/artists/" + userSubject + "/events?app_id=codingbootcamp";
+    axios.get(queryURLBands).then(
+        function(response){
+            var time = moment(response.data[0].datetime, "YYYY-MM-DD-HH:mm:ss").format("MM/DD/YYYY");
+            console.log("Name of Venue: " + response.data[0].venue.name + "\nVenue Location: " + response.data[0].venue.city + ", " + response.data[0].venue.country + "\nDate of the Event: " + time)
+        }
+    )
 };
 
 function movieCall(){
-axios.get(queryURLMovies)
-.then(
-  function(response) {
-      console.log(response);
-    console.log("Title: " + response.title + "\nYear: " + response.year + "\nIMDB Rating: " + response.imdbRating + "\nRotten Tomatoes Rating: " + response.Ratings[1].Value + "\nCountry Produced: " + response.Country + "\nLanguage" + response.Language + "\nPlot: " + response.Plot + "\nActors: " + response.Actors);
-  }
-);
+    if(!userSubject){
+        userSubject = "Mr.+Nobody";
+    }
+    var queryURLMovies = "http://www.omdbapi.com/?t=" + userSubject + "&y=&plot=short&apikey=trilogy";
+    axios.get(queryURLMovies)
+    .then(
+    function(response) {
+        console.log("Title: " + response.data.Title + "\nYear: " + response.data.Year + "\nIMDB Rating: " + response.data.imdbRating + "\nRotten Tomatoes Rating: " + response.data.Ratings[1].Value + "\nCountry Produced: " + response.data.Country + "\nLanguage: " + response.data.Language + "\nPlot: " + response.data.Plot + "\nActors: " + response.data.Actors);
+    });
 };
+
+function songCall(){
+    if(!userSubject){
+        userSubject = "The Sign Ace of Base"
+    };
+    spotify.search({ type: 'track', query: userSubject, limit: 5 }, function(err, data) {
+        if (err) {
+          return console.log('Error occurred: ' + err);
+        };
+        console.log(data.tracks.items[0].album)
+    });
+};
+// function doThings(){
+//     fs.readFile("random.txt", "utf8", function(err, data) {
+//         if (err) {
+//           return console.log(err);
+//         }
+// }
 
 // switch
 
 switch(userCommand){
     case "concert-this":
         concertCall();
-        console.log("concert")
         break;
     case "spotify-this-song":
-        console.log("spotify")
+        songCall();
         break;
     case "movie-this":
         movieCall();
-        console.log("movie")
         break;
     case "do-what-it-says":
         console.log("something")
@@ -95,5 +112,3 @@ switch(userCommand){
     default:
         console.log("Oopsie Poops")
 }
-
-// questions

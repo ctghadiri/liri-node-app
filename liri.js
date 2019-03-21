@@ -38,7 +38,6 @@
     // node liri.js do-what-it-says
         // run spotify-this-song
             // "I Want it That Way,"
-            // ???Edit the text in random.txt to test out the feature for movie-this and concert-this
 require("dotenv").config();
 var keys = require("./keys.js");
 var axios = require("axios");
@@ -49,8 +48,6 @@ var fs = require("fs")
 
 var userCommand = process.argv[2];
 var userSubject = process.argv.slice(3).join("+");
-console.log(userSubject)
-
 // Data Pulls
 
 

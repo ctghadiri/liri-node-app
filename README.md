@@ -55,8 +55,7 @@ https://ctghadiri.github.io/liri-node-app
 
 ### IMAGE of Final Product
 
-![ScreenShot]()
-![ScreenShot]()
+![ScreenShot](Liri-Bot.png)
 
 ### Learning Points
 * A solid plan via pseudocoding saves time and energy

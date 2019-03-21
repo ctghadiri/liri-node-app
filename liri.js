@@ -84,7 +84,7 @@ function songCall(){
         if (err) {
           return console.log('Error occurred: ' + err);
         };
-        console.log(data.tracks.items[0].album)
+        console.log("Artist: " + data.tracks.items[0].album.artists[0].name + "\nSong Name: " + data.tracks.items[0].name + "\nLink: " + data.tracks.items[0].external_urls.spotify + "\nAlbum: " + data.tracks.items[0].album.name)
     });
 };
 // function doThings(){

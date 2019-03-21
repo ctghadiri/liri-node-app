@@ -42,8 +42,8 @@
 require("dotenv").config();
 var keys = require("./keys.js");
 var axios = require("axios");
-var moment = require("moment")
-var Spotify = require("node-spotify-api")
+var moment = require("moment");
+var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
 var fs = require("fs")
 
@@ -87,12 +87,17 @@ function songCall(){
         console.log("Artist: " + data.tracks.items[0].album.artists[0].name + "\nSong Name: " + data.tracks.items[0].name + "\nLink: " + data.tracks.items[0].external_urls.spotify + "\nAlbum: " + data.tracks.items[0].album.name)
     });
 };
-// function doThings(){
-//     fs.readFile("random.txt", "utf8", function(err, data) {
-//         if (err) {
-//           return console.log(err);
-//         }
-// }
+function doWhatItSays(){
+    fs.readFile("random.txt", "utf8", function(err, data) {
+        if (err) {
+          return console.log(err);
+        }
+        var dataArray = data.split(",")
+        userCommand = dataArray[0];
+        userSubject = dataArray[1];
+        songCall();
+    });
+};
 
 // switch
 
@@ -107,8 +112,9 @@ switch(userCommand){
         movieCall();
         break;
     case "do-what-it-says":
-        console.log("something")
+        doWhatItSays()
         break;
     default:
-        console.log("Oopsie Poops")
+        console.log("Sorry. You put in a wrong command......... Yikes")
+        console.log("\nOptions are: \nmovie-this \nconcert-this \nspotify-this-song \ndo-what-it-says")
 }
